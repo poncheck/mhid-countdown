@@ -1,0 +1,13 @@
+version: "3.8"
+
+# Wersja do testów LOKALNYCH — bez Caddy/SSL, tylko goły nginx na porcie 8080.
+# Użycie: docker compose -f docker-compose.local.yml up -d --build
+# Strona będzie dostępna pod: http://localhost:8080
+
+services:
+  mhid-countdown:
+    build: .
+    container_name: mhid-countdown-local
+    restart: unless-stopped
+    ports:
+      - "8080:80"
