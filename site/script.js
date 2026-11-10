@@ -64,3 +64,67 @@ function tick() {
 
 tick();
 const timer = setInterval(tick, 1000);
+
+// ====== "Dodaj do kalendarza" ======
+// Przypomnienie o starcie przedsprzedaży (nie o samej imprezie)
+function formatUTC(date) {
+  return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+}
+
+const calEventTitle = "Przedsprzedaż biletów — My Head Is Dubby 20 Years";
+const calEventDetails = "Start ostatniej puli biletów online na 20 Years of My Head Is Dubby. Kup bilet: " + BUY_URL;
+const calEventLocation = "Online — " + BUY_URL;
+
+const calStart = formatUTC(PRESALE_START);
+const calEnd = formatUTC(PRESALE_END);
+
+// Google Calendar link
+const googleCalUrl =
+  "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+  "&text=" + encodeURIComponent(calEventTitle) +
+  "&dates=" + calStart + "/" + calEnd +
+  "&details=" + encodeURIComponent(calEventDetails) +
+  "&location=" + encodeURIComponent(calEventLocation);
+
+const calGoogleLink = document.getElementById("cal-google");
+if (calGoogleLink) calGoogleLink.href = googleCalUrl;
+
+// .ics file (Apple Calendar / Outlook)
+const icsContent = [
+  "BEGIN:VCALENDAR",
+  "VERSION:2.0",
+  "PRODID:-//MyHeadIsDubby//Countdown//PL",
+  "BEGIN:VEVENT",
+  "UID:" + Date.now() + "@myheadisdubby.com",
+  "DTSTAMP:" + formatUTC(new Date()),
+  "DTSTART:" + calStart,
+  "DTEND:" + calEnd,
+  "SUMMARY:" + calEventTitle,
+  "DESCRIPTION:" + calEventDetails,
+  "LOCATION:" + calEventLocation,
+  "END:VEVENT",
+  "END:VCALENDAR"
+].join("\r\n");
+
+const calIcsLink = document.getElementById("cal-ics");
+if (calIcsLink) {
+  const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+  calIcsLink.href = URL.createObjectURL(blob);
+}
+
+// Toggle dropdown menu
+const calendarBtn = document.getElementById("calendar-btn");
+const calendarMenu = document.getElementById("calendar-menu");
+
+if (calendarBtn && calendarMenu) {
+  calendarBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    calendarMenu.classList.toggle("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!calendarMenu.contains(e.target) && e.target !== calendarBtn) {
+      calendarMenu.classList.add("hidden");
+    }
+  });
+}

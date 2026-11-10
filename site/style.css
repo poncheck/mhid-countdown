@@ -197,6 +197,71 @@ body {
   opacity: 0.85;
 }
 
+.calendar-wrap {
+  position: relative;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.calendar-btn {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--ink);
+  background: var(--cream-dim);
+  border: 3px solid var(--ink);
+  padding: 10px 18px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.calendar-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.calendar-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.calendar-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  min-width: 190px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-menu a {
+  display: block;
+  padding: 10px 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(17,20,26,0.15);
+  text-align: left;
+}
+
+.calendar-menu a:last-child {
+  border-bottom: none;
+}
+
+.calendar-menu a:hover {
+  background: var(--green);
+}
+
+
 /* STAN 2: przedsprzedaż aktywna — pulsujący, bardziej alarmowy wariant */
 .live-section {
   border-color: var(--red-stamp);
@@ -368,3 +433,129 @@ body {
   .time-num { min-width: 54px; font-size: 28px; padding: 2px 4px; }
   .colon { padding-bottom: 16px; }
 }
+
+/* ===== Mobile responsiveness (ogólne, szersze niż 420px) ===== */
+@media (max-width: 600px) {
+  .site-header {
+    padding: 16px 16px;
+  }
+
+  .logo-stamp {
+    font-size: 16px;
+    padding: 3px 8px;
+  }
+
+  .date-stamp {
+    font-size: 16px;
+    letter-spacing: 1.5px;
+  }
+
+  .hero {
+    padding: 8px 12px 40px;
+  }
+
+  .skull-wrap {
+    max-width: 280px;
+  }
+
+  .title {
+    margin-top: 24px;
+  }
+
+  .title-sub {
+    font-size: 12px;
+    letter-spacing: 3px;
+  }
+
+  .tagline {
+    font-size: 13px;
+    margin-top: 12px;
+  }
+
+  .countdown-section {
+    margin-top: 26px;
+    padding: 20px 12px 24px;
+  }
+
+  .countdown-label {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    line-height: 1.4;
+    margin-bottom: 14px;
+    padding: 0 4px;
+  }
+
+  .deadline-note {
+    font-size: 11px;
+    padding: 0 6px;
+  }
+
+  .buy-btn {
+    font-size: 16px;
+    padding: 14px 26px;
+    width: 100%;
+  }
+
+  .calendar-wrap {
+    width: 100%;
+  }
+
+  .calendar-btn {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .calendar-menu {
+    min-width: 100%;
+    left: 0;
+    transform: none;
+  }
+
+  .ticket-card {
+    padding: 26px 16px 20px;
+  }
+
+  .ticket-card h2 {
+    font-size: 20px;
+  }
+
+  .ticket-row {
+    font-size: 11px;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+  }
+
+  .ticket-row strong {
+    text-align: left;
+  }
+
+  .info-strip {
+    margin-top: 32px;
+    gap: 12px;
+  }
+
+  .info-item {
+    min-width: 0;
+    flex: 1 1 calc(50% - 12px);
+    padding: 10px 12px;
+  }
+
+  .info-value {
+    font-size: 12px;
+  }
+
+  .site-footer {
+    font-size: 9px;
+    padding: 20px 12px 30px;
+  }
+}
+
+@media (max-width: 340px) {
+  .countdown { gap: 3px; }
+  .time-block { min-width: 42px; }
+  .time-num { min-width: 46px; font-size: 24px; padding: 2px 3px; }
+  .time-label { font-size: 9px; }
+  .colon { font-size: 20px; padding-bottom: 12px; }
+}
+
