@@ -1,39 +1,13 @@
-version: "3.8"
-
 services:
-  # Serwuje statyczną stronę (HTML/CSS/JS) na porcie wewnętrznym 80
+  # Serwuje statyczną stronę (HTML/CSS/JS) na porcie 8080 hosta.
+  #
+  # UWAGA: ten serwer stoi za Pangolinem (tunel + TLS po stronie Pangolina),
+  # dlatego NIE ma tutaj Caddy/Let's Encrypt — Pangolin już terminuje HTTPS
+  # i przekazuje zwykły HTTP do tego kontenera na porcie 8080.
+  # "Resource" w dashboardzie Pangolina musi wskazywać na port 8080 tego hosta.
   mhid-countdown:
     build: .
     container_name: mhid-countdown
     restart: unless-stopped
-    expose:
-      - "80"
-    networks:
-      - web
-
-  # Caddy = reverse proxy + automatyczny, darmowy certyfikat HTTPS (Let's Encrypt)
-  # Wymaga, aby DNS bilety.myheadisdubby.com wskazywał na publiczny IP tego serwera
-  # oraz żeby porty 80 i 443 były otwarte na zewnątrz.
-  caddy:
-    image: caddy:2-alpine
-    container_name: mhid-caddy
-    restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-    networks:
-      - web
-    depends_on:
-      - mhid-countdown
-
-networks:
-  web:
-    driver: bridge
-
-volumes:
-  caddy_data:
-  caddy_config:
+      - "8080:80"

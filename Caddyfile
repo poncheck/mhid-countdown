@@ -1,4 +1,0 @@
-bilety.myheadisdubby.com {
-	reverse_proxy mhid-countdown:80
-	encode gzip
-}

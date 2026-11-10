@@ -9,11 +9,12 @@ Prosta strona z odliczaniem do zamknięcia przedsprzedaży biletów online na
 - `site/style.css` — styl dopasowany do plakatu (pomarańcz/granat/neonowa zieleń/kremowy)
 - `site/script.js` — logika odliczania + 3 stany (przed startem / live 48h / zamknięte)
 - `site/poster.jpg` — grafika z plakatu użyta jako hero image
+- `site/logo.png` — logo My Head Is Dubby (header + footer)
 - `Dockerfile` — buduje obraz nginx serwujący stronę statyczną
 - `nginx.conf` — konfiguracja nginx (gzip, cache)
-- `docker-compose.yml` — **wersja produkcyjna**: strona + Caddy (reverse proxy z automatycznym HTTPS)
-- `docker-compose.local.yml` — **wersja do testów lokalnych**: tylko nginx, bez SSL, na porcie 8080
-- `Caddyfile` — konfiguracja Caddy dla domeny bilety.myheadisdubby.com
+- `docker-compose.yml` — **wersja produkcyjna**: strona na porcie **8080** (bez SSL —
+  TLS i tunel obsługuje Pangolin po swojej stronie)
+- `docker-compose.local.yml` — wersja do szybkich testów lokalnych na porcie 8080
 
 ## Jak to działa
 
@@ -30,14 +31,39 @@ nie trzeba go zmieniać.
 
 ---
 
-## ⚠️ Uruchomienie LOKALNE (testy, podgląd) — BEZ SSL
+## 🚀 Architektura: Pangolin + ten serwer
 
-Jeśli chcesz tylko zobaczyć, jak strona wygląda, **nie używaj** zwykłego
-`docker compose up` — to odpala Caddy, który próbuje wygenerować certyfikat
-SSL przez Let's Encrypt. Lokalnie (bez publicznego DNS i portu 443 widocznego
-z internetu) to się nie uda i strona nie będzie dostępna, nawet przez HTTP.
+Ten serwer stoi **za Pangolinem** (tunel + reverse proxy, jak Cloudflare Tunnel).
+Pangolin obsługuje publiczny ruch, TLS/HTTPS i tunelowanie do tej maszyny —
+dlatego **nie ma tu Caddy ani własnego certyfikatu Let's Encrypt**. To
+rozwiązuje problem "challenge failed" / "unrecognized name", który występował
+przy próbie wystawienia certyfikatu lokalnie — Let's Encrypt nigdy nie mógł
+dotrzeć do lokalnego Caddy, bo cały ruch i tak idzie przez serwer Pangolina.
 
-**Do testów lokalnych użyj pliku `docker-compose.local.yml`:**
+**Ustawienia w dashboardzie Pangolina (Resource):**
+- Domena: `bilety.myheadisdubby.com`
+- Cel: ten serwer, port **8080**
+- Protokół do backendu: HTTP (nie HTTPS — TLS jest terminowany przez Pangolin)
+
+### Start
+```bash
+cd mhid-countdown
+git pull
+docker compose up -d --build
+```
+
+Strona wstaje na porcie **8080** tego serwera. Pangolin (Newt agent) musi być
+już skonfigurowany, żeby kierować `bilety.myheadisdubby.com` na ten port —
+jeśli dashboard Pangolina wskazuje inny port, zaktualizuj go na 8080.
+
+### Zatrzymanie
+```bash
+docker compose down
+```
+
+---
+
+## 🧪 Uruchomienie LOKALNE (szybki podgląd na tym samym komputerze)
 
 ```bash
 cd mhid-countdown
@@ -51,44 +77,14 @@ Zatrzymanie:
 docker compose -f docker-compose.local.yml down
 ```
 
----
-
-## 🚀 Uruchomienie PRODUKCYJNE (na realnym serwerze, z domeną)
-
-### Wymagania przed startem
-- Serwer z publicznym adresem IP i otwartymi portami **80** i **443** na zewnątrz
-  (firewall/security group musi przepuszczać ruch z internetu na te porty)
-- Rekord DNS **A** (lub AAAA) dla `bilety.myheadisdubby.com` wskazujący na
-  publiczny adres IP tego serwera — **musi być aktywny PRZED startem**,
-  bo Caddy sprawdza go przy generowaniu certyfikatu Let's Encrypt
-
-### Start
-```bash
-cd mhid-countdown
-docker compose up -d --build
-```
-
-Po chwili strona powinna być dostępna pod `https://bilety.myheadisdubby.com`.
-Pierwsze uruchomienie może potrwać do minuty (Caddy generuje certyfikat).
-
-### Sprawdzenie logów (np. jeśli certyfikat się nie generuje)
-```bash
-docker compose logs -f caddy
-```
-
-Typowe przyczyny, gdy certyfikat się nie generuje:
-- DNS jeszcze nie wskazuje na ten serwer (sprawdź: `dig bilety.myheadisdubby.com`)
-- Port 80 lub 443 zablokowany przez firewall/dostawcę hostingu
-- Inna usługa już zajmuje port 80/443 na serwerze
-
-### Zatrzymanie
-```bash
-docker compose down
-```
+(Uwaga: `docker-compose.yml` i `docker-compose.local.yml` używają tego samego
+portu 8080 — nie odpalaj obu jednocześnie na tej samej maszynie, drugi po
+prostu nie wstanie, bo port będzie zajęty.)
 
 ## Do zrobienia przed publikacją
 
 - [x] Link do zakupu biletów (Stage24) wpisany w `site/script.js`
-- [ ] Ustawić DNS A/AAAA dla `bilety.myheadisdubby.com`
-- [ ] Otworzyć porty 80/443 na serwerze (firewall)
+- [x] Zdjęty Caddy/Let's Encrypt — TLS obsługuje Pangolin
+- [ ] Sprawdzić w dashboardzie Pangolina, że Resource dla
+      `bilety.myheadisdubby.com` wskazuje na port **8080** tego serwera
 - [ ] (opcjonalnie) podmienić link w stopce / dodać link do Facebook eventu
