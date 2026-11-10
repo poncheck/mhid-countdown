@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20 Years of My Head Is Dubby — Przedsprzedaż biletów</title>
+<meta name="description" content="20 Years of My Head Is Dubby — 21.11.2026, Protokultura Wrocław. Przedsprzedaż online startuje w poniedziałek 16.11.2026 o 8:00 i trwa 48 godzin.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="noise"></div>
+
+<header class="site-header">
+  <div class="logo-stamp">MHID</div>
+  <div class="date-stamp">21·11·26</div>
+</header>
+
+<main class="hero">
+
+  <div class="skull-wrap">
+    <img src="poster.jpg" alt="My Head Is Dubby 20 Years poster" class="skull-img">
+  </div>
+
+  <h1 class="title">
+    <span class="title-sub">MY HEAD IS DUBBY</span>
+    <span class="title-main">20&nbsp;YEARS</span>
+  </h1>
+
+  <p class="tagline">Przedsprzedaż biletów online. Tylko 48 godzin.</p>
+
+  <!-- STAN 1: przed otwarciem przedsprzedaży -->
+  <section id="before-section" class="countdown-section">
+    <div class="countdown-label">PRZEDSPRZEDAŻ STARTUJE ZA</div>
+    <div id="countdown" class="countdown">
+      <div class="time-block">
+        <span id="days" class="time-num">00</span>
+        <span class="time-label">dni</span>
+      </div>
+      <div class="colon">:</div>
+      <div class="time-block">
+        <span id="hours" class="time-num">00</span>
+        <span class="time-label">godz</span>
+      </div>
+      <div class="colon">:</div>
+      <div class="time-block">
+        <span id="minutes" class="time-num">00</span>
+        <span class="time-label">min</span>
+      </div>
+      <div class="colon">:</div>
+      <div class="time-block">
+        <span id="seconds" class="time-num">00</span>
+        <span class="time-label">sek</span>
+      </div>
+    </div>
+    <div class="deadline-note">Start: poniedziałek 16.11.2026, 8:00 — przedsprzedaż trwa tylko 48 godzin</div>
+  </section>
+
+  <!-- STAN 2: przedsprzedaż trwa (48h) -->
+  <section id="live-section" class="countdown-section live-section hidden">
+    <div class="countdown-label live-label">PRZEDSPRZEDAŻ TRWA! KONIEC ZA</div>
+    <div id="countdown-live" class="countdown">
+      <div class="time-block">
+        <span id="hours-live" class="time-num time-num-live">00</span>
+        <span class="time-label">godz</span>
+      </div>
+      <div class="colon">:</div>
+      <div class="time-block">
+        <span id="minutes-live" class="time-num time-num-live">00</span>
+        <span class="time-label">min</span>
+      </div>
+      <div class="colon">:</div>
+      <div class="time-block">
+        <span id="seconds-live" class="time-num time-num-live">00</span>
+        <span class="time-label">sek</span>
+      </div>
+    </div>
+    <div class="deadline-note">Okno przedsprzedaży zamyka się w środę 18.11.2026, 8:00</div>
+
+    <a id="buy-btn" href="#" class="buy-btn">KUP BILET TERAZ</a>
+  </section>
+
+  <!-- STAN 3: po zamknięciu przedsprzedaży -->
+  <section id="sold-out-section" class="sold-out-section hidden">
+    <div class="ticket-card">
+      <div class="ticket-ribbon">ZAMKNIĘTE</div>
+      <h2>Przedsprzedaż online zakończona!</h2>
+      <p>Nie zdążyłeś? Spokojnie — reszta biletów czeka na Ciebie na bramce, w dniu imprezy.</p>
+      <div class="ticket-divider"></div>
+      <div class="ticket-row"><span>DATA</span><strong>21.11.2026 (sobota)</strong></div>
+      <div class="ticket-row"><span>GODZINA</span><strong>22:00 — 06:00</strong></div>
+      <div class="ticket-row"><span>MIEJSCE</span><strong>Protokultura, ul. Robotnicza 5, Wrocław</strong></div>
+      <div class="ticket-divider"></div>
+      <p class="small-note">Bilety na bramce w dniu wydarzenia, do wyczerpania puli.</p>
+    </div>
+  </section>
+
+  <section class="info-strip">
+    <div class="info-item">
+      <div class="info-title">DATA</div>
+      <div class="info-value">21.11.2026</div>
+    </div>
+    <div class="info-item">
+      <div class="info-title">GODZINA</div>
+      <div class="info-value">22:00 / 06:00</div>
+    </div>
+    <div class="info-item">
+      <div class="info-title">MIEJSCE</div>
+      <div class="info-value">Protokultura, Robotnicza 5, Wrocław</div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>20 YEARS OF MY HEAD IS DUBBY &times; DRUMOBSESSION</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
